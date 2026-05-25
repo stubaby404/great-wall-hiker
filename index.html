@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Wall Hiker</title>
+    <style>
+        /* CSS Flexbox & Mobile Responsive Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFF3DD; /* Antiqued Cream */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header { 
+            color: #8B0000; /* Imperial Red */
+            text-align: center; 
+            border-bottom: 2px solid #D4AF37; /* Gold */
+            padding-bottom: 10px;
+        }
+        .card {
+            background: white; 
+            border: 2px solid #D4AF37;
+            border-radius: 10px; 
+            padding: 20px; 
+            width: 100%; 
+            max-width: 400px;
+            text-align: center; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        input { 
+            padding: 10px; 
+            font-size: 16px; 
+            width: 80%; 
+            margin-bottom: 15px; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #8B0000; 
+            color: white; 
+            border: none;
+            padding: 12px 25px; 
+            font-size: 16px; 
+            border-radius: 5px; 
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background-color: #660000; }
+        .progress-container {
+            width: 100%; 
+            background-color: #e0e0e0; 
+            border-radius: 10px; 
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 25px; 
+            background-color: #D4AF37; 
+            width: 0%; /* Starts at 0, updated by JS */
+            transition: width 0.5s ease-in-out;
+        }
+        #milestone-alert {
+            display: none; 
+            background-color: #8B0000; 
+            color: white;
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #D4AF37;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="header">Great Wall Journey</h1>
+    
+    <div class="card">
+        <h2>Log Your Daily Steps</h2>
+        <input type="number" id="stepInput" placeholder="Enter steps (e.g., 5000)">
+        <button onclick="logSteps()">Submit Steps</button>
+
+        <h3>Total Distance: <span id="distanceDisplay">0.00</span> km</h3>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div id="milestone-alert">
+        <h2 id="milestone-title" style="margin-top: 0; color: #D4AF37;">Milestone!</h2>
+        <p id="milestone-text"></p>
+    </div>
+
+    <script>
+        // --- CONSTANTS ---
+        const KM_PER_STEP = 0.00076;
+        const TOTAL_WALL_KM = 8851.8;
+
+        // --- DATA HANDLING ---
+        // Retrieve saved distance from localStorage, or start at 0
+        let currentKm = parseFloat(localStorage.getItem('greatWallDistance')) || 0;
+
+        // Initialize UI on page load
+        updateUI();
+
+        // --- ABSTRACTION: Main function to handle the submit button ---
+        function logSteps() {
+            let stepInput = document.getElementById('stepInput').value;
+            let steps = parseInt(stepInput);
+
+            if (steps > 0) {
+                // ALGORITHM 1: Math conversion
+                let kmWalked = steps * KM_PER_STEP;
+                currentKm += kmWalked;
+
+                // Save new distance to browser storage
+                localStorage.setItem('greatWallDistance', currentKm);
+
+                updateUI();
+                checkMilestones(currentKm);
+                
+                // Clear the input field
+                document.getElementById('stepInput').value = ''; 
+            } else {
+                alert("Please enter a valid number of steps!");
+            }
+        }
+
+        function updateUI() {
+            // Update the text display
+            document.getElementById('distanceDisplay').innerText = currentKm.toFixed(2);
+
+            // Update the visual progress bar
+            let progressPercent = (currentKm / TOTAL_WALL_KM) * 100;
+            if (progressPercent > 100) progressPercent = 100; // Cap at 100%
+            document.getElementById('progressBar').style.width = progressPercent + "%";
+        }
+
+        // --- ALGORITHM 2: Conditional Statements for Milestones ---
+        function checkMilestones(distance) {
+            let alertBox = document.getElementById('milestone-alert');
+            let title = document.getElementById('milestone-title');
+            let text = document.getElementById('milestone-text');
+
+            // Beijing-focused Milestones
+            if (distance >= 50 && distance < 60) {
+                alertBox.style.display = "block";
+                title.innerText = "50 km: Badaling Watchtower!";
+                text.innerText = "You've reached Badaling! This is the most visited section of the Great Wall, built during the Ming Dynasty to protect the capital city of Beijing.";
+            } else if (distance >= 10 && distance < 20) {
+                alertBox.style.display = "block";
+                title.innerText = "10 km: The Journey Begins!";
+                text.innerText = "Great job! You have officially started your expedition across the dryland ecosystems of the Great Wall.";
+            } else {
+                // Hide alert if not currently hitting a specific milestone bracket
+                alertBox.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
