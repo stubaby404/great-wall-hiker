@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Great Wall Hiker</title>
+    <title>Great Wall Hiker - Beijing Edition</title>
     <style>
         /* CSS Flexbox & Mobile Responsive Styling */
         body {
@@ -21,6 +21,8 @@
             text-align: center; 
             border-bottom: 2px solid #D4AF37; /* Gold */
             padding-bottom: 10px;
+            width: 100%;
+            max-width: 400px;
         }
         .card {
             background: white; 
@@ -35,7 +37,7 @@
         input { 
             padding: 10px; 
             font-size: 16px; 
-            width: 80%; 
+            width: 70%; 
             margin-bottom: 15px; 
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -44,26 +46,34 @@
             background-color: #8B0000; 
             color: white; 
             border: none;
-            padding: 12px 25px; 
+            padding: 12px 20px; 
             font-size: 16px; 
             border-radius: 5px; 
             cursor: pointer;
             font-weight: bold;
         }
         button:hover { background-color: #660000; }
-        .progress-container {
-            width: 100%; 
-            background-color: #e0e0e0; 
-            border-radius: 10px; 
+        
+        /* The New SVG Map Styling */
+        .map-container {
+            width: 100%;
             margin-top: 20px;
-            overflow: hidden;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            position: relative;
         }
-        .progress-bar {
-            height: 25px; 
-            background-color: #D4AF37; 
-            width: 0%; /* Starts at 0, updated by JS */
-            transition: width 0.5s ease-in-out;
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
         }
+        .map-text {
+            font-size: 12px;
+            font-weight: bold;
+            fill: #8B0000;
+        }
+        
         #milestone-alert {
             display: none; 
             background-color: #8B0000; 
@@ -80,17 +90,30 @@
 </head>
 <body>
 
-    <h1 class="header">Great Wall Journey</h1>
+    <h1 class="header">Beijing Wall Challenge</h1>
     
     <div class="card">
         <h2>Log Your Daily Steps</h2>
         <input type="number" id="stepInput" placeholder="Enter steps (e.g., 5000)">
-        <button onclick="logSteps()">Submit Steps</button>
+        <button onclick="logSteps()">Submit</button>
 
-        <h3>Total Distance: <span id="distanceDisplay">0.00</span> km</h3>
+        <h3>Total Distance: <span id="distanceDisplay">0.00</span> / 50 km</h3>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+        <div class="map-container">
+            <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 40 160 Q 120 40 200 100 T 360 40" stroke="#e0e0e0" stroke-width="8" fill="none" stroke-linecap="round"/>
+                
+                <path id="progressPath" d="M 40 160 Q 120 40 200 100 T 360 40" stroke="#D4AF37" stroke-width="8" fill="none" stroke-linecap="round"/>
+                
+                <circle cx="40" cy="160" r="6" fill="#8B0000" />
+                <text x="30" y="185" class="map-text">Start</text>
+
+                <circle cx="200" cy="100" r="6" fill="#8B0000" />
+                <text x="175" y="125" class="map-text">Mutianyu</text>
+
+                <circle cx="360" cy="40" r="6" fill="#8B0000" />
+                <text x="335" y="25" class="map-text">Badaling</text>
+            </svg>
         </div>
     </div>
 
@@ -102,32 +125,41 @@
     <script>
         // --- CONSTANTS ---
         const KM_PER_STEP = 0.00076;
-        const TOTAL_WALL_KM = 8851.8;
+        const TOTAL_CHALLENGE_KM = 50; // Changed to a 50km Beijing scope!
 
         // --- DATA HANDLING ---
-        // Retrieve saved distance from localStorage, or start at 0
         let currentKm = parseFloat(localStorage.getItem('greatWallDistance')) || 0;
 
         // Initialize UI on page load
+        setupMap();
         updateUI();
 
-        // --- ABSTRACTION: Main function to handle the submit button ---
+        // Sets up the hidden CSS magic for the SVG line
+        function setupMap() {
+            let path = document.getElementById('progressPath');
+            let length = path.getTotalLength();
+            // Prepare the SVG path for drawing
+            path.style.strokeDasharray = length;
+            path.style.strokeDashoffset = length; // Start totally hidden
+            path.style.transition = "stroke-dashoffset 1s ease-in-out"; // Smooth animation
+        }
+
+        // --- ABSTRACTION: Main function ---
         function logSteps() {
             let stepInput = document.getElementById('stepInput').value;
             let steps = parseInt(stepInput);
 
             if (steps > 0) {
-                // ALGORITHM 1: Math conversion
+                // Math conversion
                 let kmWalked = steps * KM_PER_STEP;
                 currentKm += kmWalked;
 
-                // Save new distance to browser storage
+                // Save new distance
                 localStorage.setItem('greatWallDistance', currentKm);
 
                 updateUI();
                 checkMilestones(currentKm);
                 
-                // Clear the input field
                 document.getElementById('stepInput').value = ''; 
             } else {
                 alert("Please enter a valid number of steps!");
@@ -135,32 +167,39 @@
         }
 
         function updateUI() {
-            // Update the text display
-            document.getElementById('distanceDisplay').innerText = currentKm.toFixed(2);
+            // Cap visual progress at the challenge max so it doesn't break
+            let displayKm = currentKm > TOTAL_CHALLENGE_KM ? TOTAL_CHALLENGE_KM : currentKm;
+            document.getElementById('distanceDisplay').innerText = displayKm.toFixed(2);
 
-            // Update the visual progress bar
-            let progressPercent = (currentKm / TOTAL_WALL_KM) * 100;
-            if (progressPercent > 100) progressPercent = 100; // Cap at 100%
-            document.getElementById('progressBar').style.width = progressPercent + "%";
+            // Update the winding map path
+            let path = document.getElementById('progressPath');
+            let length = path.getTotalLength();
+            let progressPercent = displayKm / TOTAL_CHALLENGE_KM;
+            
+            // Draw the line by reducing the offset
+            let drawLength = length - (length * progressPercent);
+            path.style.strokeDashoffset = drawLength;
         }
 
-        // --- ALGORITHM 2: Conditional Statements for Milestones ---
+        // --- ALGORITHMS: Conditional Logic ---
         function checkMilestones(distance) {
             let alertBox = document.getElementById('milestone-alert');
             let title = document.getElementById('milestone-title');
             let text = document.getElementById('milestone-text');
 
-            // Beijing-focused Milestones
-            if (distance >= 50 && distance < 60) {
+            if (distance >= 50) {
                 alertBox.style.display = "block";
                 title.innerText = "50 km: Badaling Watchtower!";
-                text.innerText = "You've reached Badaling! This is the most visited section of the Great Wall, built during the Ming Dynasty to protect the capital city of Beijing.";
-            } else if (distance >= 10 && distance < 20) {
+                text.innerText = "Challenge Complete! You have conquered the Badaling section, the jewel of the Ming Dynasty defenses.";
+            } else if (distance >= 25 && distance < 26) { // triggers near the middle point
                 alertBox.style.display = "block";
-                title.innerText = "10 km: The Journey Begins!";
-                text.innerText = "Great job! You have officially started your expedition across the dryland ecosystems of the Great Wall.";
+                title.innerText = "25 km: Mutianyu Section!";
+                text.innerText = "You're halfway there! Mutianyu is famous for its dense watchtowers and stunning forest views.";
+            } else if (distance >= 1 && distance < 2) {
+                alertBox.style.display = "block";
+                title.innerText = "1 km: The First Steps!";
+                text.innerText = "A journey of a thousand miles begins with a single step. Keep going!";
             } else {
-                // Hide alert if not currently hitting a specific milestone bracket
                 alertBox.style.display = "none";
             }
         }
