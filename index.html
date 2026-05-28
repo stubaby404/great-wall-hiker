@@ -58,9 +58,12 @@
         .map-container {
             width: 100%;
             margin-top: 20px;
-            background-color: #f9f9f9;
+            /* This is where your background map image goes! */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Beijing_Relief_Map.png/800px-Beijing_Relief_Map.png');
+            background-size: cover;
+            background-position: center;
             border-radius: 10px;
-            border: 1px solid #ddd;
+            border: 2px solid #D4AF37;
             position: relative;
         }
         svg {
@@ -101,18 +104,18 @@
 
         <div class="map-container">
             <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 40 160 Q 120 40 200 100 T 360 40" stroke="#e0e0e0" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path d="M 20 170 L 50 160 L 70 180 L 100 140 L 130 150 L 160 110 L 200 120 L 230 80 L 270 90 L 310 50 L 350 70 L 380 30" stroke="rgba(255, 255, 255, 0.7)" stroke-width="8" fill="none" stroke-linejoin="round"/>
                 
-                <path id="progressPath" d="M 40 160 Q 120 40 200 100 T 360 40" stroke="#D4AF37" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path id="progressPath" d="M 20 170 L 50 160 L 70 180 L 100 140 L 130 150 L 160 110 L 200 120 L 230 80 L 270 90 L 310 50 L 350 70 L 380 30" stroke="#D4AF37" stroke-width="8" fill="none" stroke-linejoin="round"/>
                 
-                <circle cx="40" cy="160" r="6" fill="#8B0000" />
-                <text x="30" y="185" class="map-text">Start</text>
+                <circle cx="20" cy="170" r="6" fill="#8B0000" stroke="#fff" stroke-width="2" />
+                <text x="10" y="195" class="map-text" style="text-shadow: 1px 1px 2px white;">Start</text>
 
-                <circle cx="200" cy="100" r="6" fill="#8B0000" />
-                <text x="175" y="125" class="map-text">Mutianyu</text>
+                <circle cx="200" cy="120" r="6" fill="#8B0000" stroke="#fff" stroke-width="2" />
+                <text x="175" y="145" class="map-text" style="text-shadow: 1px 1px 2px white;">Mutianyu</text>
 
-                <circle cx="360" cy="40" r="6" fill="#8B0000" />
-                <text x="335" y="25" class="map-text">Badaling</text>
+                <circle cx="380" cy="30" r="6" fill="#8B0000" stroke="#fff" stroke-width="2" />
+                <text x="325" y="20" class="map-text" style="text-shadow: 1px 1px 2px white;">Badaling</text>
             </svg>
         </div>
     </div>
