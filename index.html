@@ -8,7 +8,7 @@
         /* CSS Flexbox & Mobile Responsive Styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #FFF3DD; /* Antiqued Cream */
+            background-color: #FFF3DD; 
             color: #333;
             margin: 0;
             padding: 20px;
@@ -17,9 +17,9 @@
             align-items: center;
         }
         .header { 
-            color: #8B0000; /* Imperial Red */
+            color: #8B0000; 
             text-align: center; 
-            border-bottom: 2px solid #D4AF37; /* Gold */
+            border-bottom: 2px solid #D4AF37; 
             padding-bottom: 10px;
             width: 100%;
             max-width: 400px;
@@ -59,8 +59,8 @@
         .map-container {
             width: 100%;
             margin-top: 20px;
-            background-image: url('W020231123516459434484 2.jpg'); /* Your local file */
-            background-size: 100% 100%; /* Forces the map to stretch exactly to the SVG boundaries */
+            background-image: url('W020231123516459434484 2.jpg'); 
+            background-size: 100% 100%; 
             background-repeat: no-repeat;
             border-radius: 10px;
             border: 2px solid #D4AF37;
@@ -72,13 +72,13 @@
             display: block;
         }
         .map-text {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             fill: #8B0000;
         }
         
         #milestone-alert {
-            display: none; 
+            display: block; /* Default to showing the starting message */
             background-color: #8B0000; 
             color: white;
             padding: 20px; 
@@ -88,6 +88,10 @@
             max-width: 400px;
             border: 2px solid #D4AF37;
             text-align: center;
+        }
+        #milestone-text {
+            font-size: 15px;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -108,25 +112,19 @@
         <h3>Total Distance: <span id="distanceDisplay">0.00</span> / 50 km</h3>
 
         <div class="map-container">
-            <svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+            <svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
                 
-                <path d="M 120 620 L 150 630 L 170 600 L 210 500 L 260 480 L 320 440 L 370 480 L 410 460 L 460 490 L 520 450 L 560 470 L 610 370 L 660 360 L 710 370 L 750 480 L 790 510 L 850 560" 
+                <path d="M 120 620 L 150 630 L 170 600 L 210 500 L 260 480 L 320 440 L 370 480 L 430 460 L 480 490 L 540 450 L 590 470 L 640 370 L 690 360 L 760 480 L 850 560" 
                       stroke="rgba(0,0,0,0.3)" stroke-width="8" fill="none" stroke-linejoin="round"/>
                 
-                <path id="progressPath" d="M 120 620 L 150 630 L 170 600 L 210 500 L 260 480 L 320 440 L 370 480 L 410 460 L 460 490 L 520 450 L 560 470 L 610 370 L 660 360 L 710 370 L 750 480 L 790 510 L 850 560" 
+                <path id="progressPath" d="M 120 620 L 150 630 L 170 600 L 210 500 L 260 480 L 320 440 L 370 480 L 430 460 L 480 490 L 540 450 L 590 470 L 640 370 L 690 360 L 760 480 L 850 560" 
                       stroke="#D4AF37" stroke-width="10" fill="none" stroke-linejoin="round"/>
                 
-                <circle cx="120" cy="620" r="10" fill="#8B0000" stroke="#fff" stroke-width="3" />
-                <text x="70" y="650" class="map-text" style="font-size: 18px; font-weight: bold; text-shadow: 2px 2px 4px white;">Start</text>
-
-                <circle cx="320" cy="440" r="10" fill="#8B0000" stroke="#fff" stroke-width="3" />
-                <text x="280" y="420" class="map-text" style="font-size: 18px; font-weight: bold; text-shadow: 2px 2px 4px white;">Badaling</text>
-
-                <circle cx="520" cy="450" r="10" fill="#8B0000" stroke="#fff" stroke-width="3" />
-                <text x="470" y="430" class="map-text" style="font-size: 18px; font-weight: bold; text-shadow: 2px 2px 4px white;">Mutianyu</text>
-
-                <circle cx="660" cy="360" r="10" fill="#8B0000" stroke="#fff" stroke-width="3" />
-                <text x="640" y="335" class="map-text" style="font-size: 18px; font-weight: bold; text-shadow: 2px 2px 4px white;">Simatai</text>
+                <circle cx="120" cy="620" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="150" cy="630" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="170" cy="600" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="210" cy="500" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="260" cy="480" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="320" cy="440" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="370" cy="480" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="430" cy="460" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="480" cy="490" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="540" cy="450" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="590" cy="470" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="640" cy="370" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="690" cy="360" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="760" cy="480" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <circle cx="850" cy="560" r="8" fill="#8B0000" stroke="#fff" stroke-width="2" /> <text x="70" y="650" class="map-text" style="text-shadow: 2px 2px 4px white;">Start (0km)</text>
+                <text x="210" y="465" class="map-text" style="text-shadow: 2px 2px 4px white;">Badaling (14km)</text>
+                <text x="380" y="445" class="map-text" style="text-shadow: 2px 2px 4px white;">Mutianyu (26km)</text>
+                <text x="610" y="350" class="map-text" style="text-shadow: 2px 2px 4px white;">Simatai (42km)</text>
+                <text x="810" y="590" class="map-text" style="text-shadow: 2px 2px 4px white;">Finish (50km)</text>
             </svg>
         </div>
     </div>
@@ -146,8 +144,8 @@
 
         setupMap();
         updateUI();
+        checkMilestones(currentKm); // Initialize the correct text on load
 
-        // Sets up the hidden CSS magic for the SVG line
         function setupMap() {
             let path = document.getElementById('progressPath');
             let length = path.getTotalLength();
@@ -176,13 +174,12 @@
             }
         }
 
-        // --- NEW RESET FEATURE ---
         function resetSteps() {
             if(confirm("Are you sure you want to restart your journey? All progress will be lost.")) {
                 currentKm = 0;
                 localStorage.setItem('greatWallDistance', 0);
                 updateUI();
-                document.getElementById('milestone-alert').style.display = "none"; // Hide any active pop-ups
+                checkMilestones(currentKm); // Resets back to the start message
             }
         }
 
@@ -198,29 +195,56 @@
             path.style.strokeDashoffset = drawLength;
         }
 
+        // --- CONTINUOUS STAGE LOGIC (Fixed) ---
         function checkMilestones(distance) {
-            let alertBox = document.getElementById('milestone-alert');
             let title = document.getElementById('milestone-title');
             let text = document.getElementById('milestone-text');
 
             if (distance >= 50) {
-                alertBox.style.display = "block";
-                title.innerText = "50 km: Simatai Section!";
-                text.innerText = "Challenge Complete! You have reached Simatai. Known for its steepness, this section overlooks the Miyun Reservoir.";
-            } else if (distance >= 30 && distance < 31) { 
-                alertBox.style.display = "block";
-                title.innerText = "30 km: Mutianyu Section!";
-                text.innerText = "You have reached Mutianyu! Famous for its dense concentration of watchtowers.";
-            } else if (distance >= 15 && distance < 16) {
-                alertBox.style.display = "block";
-                title.innerText = "15 km: Badaling Pass!";
-                text.innerText = "Welcome to Badaling. Built in 1504, this was a vital military outpost.";
-            } else if (distance >= 1 && distance < 2) {
-                alertBox.style.display = "block";
-                title.innerText = "1 km: Mentougou District";
-                text.innerText = "Your journey begins in the rugged western mountains of Beijing!";
+                title.innerText = "50 km: Jiangjunguan (Finish!)";
+                text.innerText = "Challenge Complete! You have reached Jiangjunguan, the easternmost pass of the Beijing Great Wall. Marked by ancient rock carvings from Ming generals, this signifies the end of the capital's defensive line. You have defended the empire!";
+            } else if (distance >= 48) {
+                title.innerText = "48 km: Miyun Reservoir Overlook";
+                text.innerText = "As you near the end of your journey, the ancient Ming bricks overlook the Miyun Reservoir. This highlights a beautiful juxtaposition: the ancient defensive lifeline of the empire looking down upon the modern water lifeline of modern Beijing.";
+            } else if (distance >= 45) {
+                title.innerText = "45 km: Wangjinglou (Watching Beijing Tower)";
+                text.innerText = "You have reached Wangjinglou, the highest watchtower in the Simatai range at 986 meters above sea level. From this precise point, Ming sentries could light smoke and fire signals that could be seen directly by the Emperor's guards in Beijing.";
+            } else if (distance >= 42) {
+                title.innerText = "42 km: Simatai Section";
+                text.innerText = "You have conquered the perilous Simatai! Renowned for its Heavenly Ladder section (climbing at an 85-degree angle), this is the only section of the Great Wall authorized by UNESCO to retain its original, un-restored Ming Dynasty appearance.";
+            } else if (distance >= 38) {
+                title.innerText = "38 km: Jinshanling Section";
+                text.innerText = "Welcome to Jinshanling, an architectural masterpiece redesigned by the legendary General Qi Jiguang. It features unique barrier walls built on top of the main wall to protect defenders from enemy arrows if the wall was ever breached.";
+            } else if (distance >= 34) {
+                title.innerText = "34 km: Gubeikou Pass";
+                text.innerText = "You are standing on Gubeikou, a site of immense bloodshed. Because it sits on the easiest northern route into the central plains, historians record over 130 major battles occurring right where you are standing throughout Chinese history.";
+            } else if (distance >= 30) {
+                title.innerText = "30 km: Baimaguan (White Horse Pass)";
+                text.innerText = "Welcome to Baimaguan. Unlike the massive brick fortresses, this lesser-known strategic bottleneck was guarded by elite Ming cavalry units. The terrain here was specifically modified to give horsemen the advantage in quick counter-attacks.";
+            } else if (distance >= 26) {
+                title.innerText = "26 km: Mutianyu Section";
+                text.innerText = "You've reached Mutianyu! Originally built in the 6th century and expanded by Ming General Xu Da, it features a highly unusual 22 watchtowers crammed into just a 2-kilometer stretch, allowing for devastating crossfire against attackers.";
+            } else if (distance >= 22) {
+                title.innerText = "22 km: Jiankou (The Arrow Nock)";
+                text.innerText = "You are navigating Jiankou, notorious for its terrifyingly steep dolomite cliffs. Built on nearly vertical ridges, this wild section stands as a testament to the sheer engineering willpower of Ming builders who refused to leave any mountain unprotected.";
+            } else if (distance >= 18) {
+                title.innerText = "18 km: Huanghuacheng (The Water Wall)";
+                text.innerText = "You are at Huanghuacheng, famous for its sections that plunge directly into a lake. Historically, this heavily armed sector was built with a secondary, secret purpose: protecting the sacred Ming Tombs located just to the south.";
+            } else if (distance >= 14) {
+                title.innerText = "14 km: Badaling Pass";
+                text.innerText = "You have reached Badaling! Constructed in 1504, this was the ultimate military stronghold protecting the capital. Its walls were built with massive granite slabs and specialized firing holes, making it an impenetrable fortress during the Ming Dynasty.";
+            } else if (distance >= 10) {
+                title.innerText = "10 km: Shuiguan (The Water Pass)";
+                text.innerText = "Welcome to Shuiguan. Unlike mountain-ridge walls, this section was built directly across a V-shaped river valley. Its massive stone arches allowed water to flow through while heavily armed Ming soldiers could trap and ambush enemies attempting to wade across.";
+            } else if (distance >= 6) {
+                title.innerText = "6 km: Juyongguan Pass";
+                text.innerText = "You have arrived at Juyongguan, one of the Three Great Passes of the Great Wall. This heavily fortified valley was the direct gateway to Beijing. It features the famous Cloud Platform, a marble gate carved with protective Buddhist sutras.";
+            } else if (distance >= 3) {
+                title.innerText = "3 km: Yanhecheng Garrison";
+                text.innerText = "You have reached Yanhecheng, a vital Ming Dynasty garrison village. Built strategically along the Yongding River gorge, this fortress housed the soldiers who guarded the narrow river valleys—the easiest paths for enemies to bypass the mountains.";
             } else {
-                alertBox.style.display = "none";
+                title.innerText = "0 km: Mentougou District (Start)";
+                text.innerText = "Your journey begins in the rugged western mountains of Beijing. During the Ming Dynasty, this treacherous terrain served as the capital's first natural line of defense against invading nomadic cavalry from the northwest.";
             }
         }
     </script>
