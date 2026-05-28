@@ -41,6 +41,7 @@
             margin-bottom: 15px; 
             border: 1px solid #ccc;
             border-radius: 5px;
+            text-align: center;
         }
         button {
             background-color: #8B0000; 
@@ -54,11 +55,11 @@
         }
         button:hover { background-color: #660000; }
         
-        /* The New SVG Map Styling */
+        /* The SVG Map Styling */
         .map-container {
             width: 100%;
             margin-top: 20px;
-            background-image: url('W020231123516459434484 2.jpg');
+            background-image: url('W020231123516459434484 2.jpg'); /* Your local file */
             background-size: 100% 100%; /* Forces the map to stretch exactly to the SVG boundaries */
             background-repeat: no-repeat;
             border-radius: 10px;
@@ -96,8 +97,13 @@
     
     <div class="card">
         <h2>Log Your Daily Steps</h2>
+        
         <input type="number" id="stepInput" placeholder="Enter steps (e.g., 5000)">
-        <button onclick="logSteps()">Submit</button>
+        
+        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">
+            <button onclick="logSteps()">Submit</button>
+            <button onclick="resetSteps()" style="background-color: #666;">Reset</button>
+        </div>
 
         <h3>Total Distance: <span id="distanceDisplay">0.00</span> / 50 km</h3>
 
@@ -133,12 +139,11 @@
     <script>
         // --- CONSTANTS ---
         const KM_PER_STEP = 0.00076;
-        const TOTAL_CHALLENGE_KM = 50; // Changed to a 50km Beijing scope!
+        const TOTAL_CHALLENGE_KM = 50; 
 
         // --- DATA HANDLING ---
         let currentKm = parseFloat(localStorage.getItem('greatWallDistance')) || 0;
 
-        // Initialize UI on page load
         setupMap();
         updateUI();
 
@@ -146,23 +151,20 @@
         function setupMap() {
             let path = document.getElementById('progressPath');
             let length = path.getTotalLength();
-            // Prepare the SVG path for drawing
             path.style.strokeDasharray = length;
-            path.style.strokeDashoffset = length; // Start totally hidden
-            path.style.transition = "stroke-dashoffset 1s ease-in-out"; // Smooth animation
+            path.style.strokeDashoffset = length; 
+            path.style.transition = "stroke-dashoffset 1s ease-in-out"; 
         }
 
-        // --- ABSTRACTION: Main function ---
+        // --- CORE ALGORITHMS ---
         function logSteps() {
             let stepInput = document.getElementById('stepInput').value;
             let steps = parseInt(stepInput);
 
             if (steps > 0) {
-                // Math conversion
                 let kmWalked = steps * KM_PER_STEP;
                 currentKm += kmWalked;
 
-                // Save new distance
                 localStorage.setItem('greatWallDistance', currentKm);
 
                 updateUI();
@@ -174,22 +176,28 @@
             }
         }
 
+        // --- NEW RESET FEATURE ---
+        function resetSteps() {
+            if(confirm("Are you sure you want to restart your journey? All progress will be lost.")) {
+                currentKm = 0;
+                localStorage.setItem('greatWallDistance', 0);
+                updateUI();
+                document.getElementById('milestone-alert').style.display = "none"; // Hide any active pop-ups
+            }
+        }
+
         function updateUI() {
-            // Cap visual progress at the challenge max so it doesn't break
             let displayKm = currentKm > TOTAL_CHALLENGE_KM ? TOTAL_CHALLENGE_KM : currentKm;
             document.getElementById('distanceDisplay').innerText = displayKm.toFixed(2);
 
-            // Update the winding map path
             let path = document.getElementById('progressPath');
             let length = path.getTotalLength();
             let progressPercent = displayKm / TOTAL_CHALLENGE_KM;
             
-            // Draw the line by reducing the offset
             let drawLength = length - (length * progressPercent);
             path.style.strokeDashoffset = drawLength;
         }
 
-        // --- ALGORITHMS: Conditional Logic ---
         function checkMilestones(distance) {
             let alertBox = document.getElementById('milestone-alert');
             let title = document.getElementById('milestone-title');
@@ -197,16 +205,20 @@
 
             if (distance >= 50) {
                 alertBox.style.display = "block";
-                title.innerText = "50 km: Badaling Watchtower!";
-                text.innerText = "Challenge Complete! You have conquered the Badaling section, the jewel of the Ming Dynasty defenses.";
-            } else if (distance >= 25 && distance < 26) { // triggers near the middle point
+                title.innerText = "50 km: Simatai Section!";
+                text.innerText = "Challenge Complete! You have reached Simatai. Known for its steepness, this section overlooks the Miyun Reservoir.";
+            } else if (distance >= 30 && distance < 31) { 
                 alertBox.style.display = "block";
-                title.innerText = "25 km: Mutianyu Section!";
-                text.innerText = "You're halfway there! Mutianyu is famous for its dense watchtowers and stunning forest views.";
+                title.innerText = "30 km: Mutianyu Section!";
+                text.innerText = "You have reached Mutianyu! Famous for its dense concentration of watchtowers.";
+            } else if (distance >= 15 && distance < 16) {
+                alertBox.style.display = "block";
+                title.innerText = "15 km: Badaling Pass!";
+                text.innerText = "Welcome to Badaling. Built in 1504, this was a vital military outpost.";
             } else if (distance >= 1 && distance < 2) {
                 alertBox.style.display = "block";
-                title.innerText = "1 km: The First Steps!";
-                text.innerText = "A journey of a thousand miles begins with a single step. Keep going!";
+                title.innerText = "1 km: Mentougou District";
+                text.innerText = "Your journey begins in the rugged western mountains of Beijing!";
             } else {
                 alertBox.style.display = "none";
             }
